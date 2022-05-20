@@ -65,6 +65,7 @@ creating custom environment values, see the `UIEnvironmentKey` protocol.
 The documentation for the latest release is available here:
 
 * [main](https://nonameplum.github.io/UIEnvironment/main/documentation/uienvironment/)
+* [1.0.0](https://nonameplum.github.io/UIEnvironment/1.0.0/documentation/uienvironment/)
 
 ## Installation
 
