@@ -27,7 +27,7 @@ you read from the declared property by directly referring from it:
 ```swift    
 override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = userInterfaceStyle ? .black : .white
+    view.backgroundColor = userInterfaceStyle == .dark ? .black : .white
 }
 ```
 
@@ -44,7 +44,7 @@ final class ViewController: UIViewController {
 
 extension ViewController: UIEnvironmentUpdating {
     func updateEnvironment() {
-        view.backgroundColor = userInterfaceStyle ? .black : .white
+        view.backgroundColor = userInterfaceStyle == .dark ? .black : .white
     }
 }
 ```
