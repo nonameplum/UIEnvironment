@@ -16,7 +16,7 @@ extension UIEnvironmentValues {
         set { self[SizeCategoryEnvironmentKey.self] = newValue }
     }
 
-    internal static let setupSizeCategoryListener: Void = {
+    public static let setupSizeCategoryListener: Void = {
         NotificationCenter.default.addObserver(
             forName: UIContentSizeCategory.didChangeNotification,
             object: nil,

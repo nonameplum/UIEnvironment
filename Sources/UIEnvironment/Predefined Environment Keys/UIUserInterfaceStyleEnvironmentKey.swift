@@ -90,21 +90,19 @@ extension UIEnvironmentable {
     }
 }
 
-extension UIScreen {
-    internal static let setupTraitCollectionListener: Void = {
-        guard let originalMethod = class_getInstanceMethod(
-            UIScreen.self,
-            #selector(traitCollectionDidChange(_:))
-        ),
-            let swizzledMethod = class_getInstanceMethod(
-                UIScreen.self,
-                #selector(swizzled_traitCollectionDidChange(_:))
-            )
-        else {
-            return
-        }
+import SwiftHook
 
-        method_exchangeImplementations(originalMethod, swizzledMethod)
+extension UIScreen {
+    public static let setupTraitCollectionListener: Void = {
+        _ = try? hookBefore(
+            targetClass: UIScreen.self,
+            selector: #selector(UIScreen.traitCollectionDidChange(_:)),
+            closure: {
+                UIApplication.shared.forEachWindow {
+                    $0.environment(\.userInterfaceStyle, UITraitCollection.current.userInterfaceStyle)
+                }
+            }
+        )
     }()
 
     @objc private func swizzled_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -116,24 +114,13 @@ extension UIScreen {
 }
 
 extension UIWindow {
-    internal static let setupOverrideUserInterfaceListener: Void = {
-        guard let originalMethod = class_getInstanceMethod(
-            UIWindow.self,
-            #selector(setter: UIWindow.overrideUserInterfaceStyle)
-        ),
-            let swizzledMethod = class_getInstanceMethod(
-                UIWindow.self,
-                #selector(UIWindow.swizzled_setOverrideUserInterfaceStyle(_:))
-            )
-        else {
-            return
-        }
-
-        method_exchangeImplementations(originalMethod, swizzledMethod)
+    public static let setupOverrideUserInterfaceListener: Void = {
+        _ = try? hookBefore(
+            targetClass: UIWindow.self,
+            selector: #selector(setter: UIWindow.overrideUserInterfaceStyle),
+            closure: { object, sel, style in
+                object.environment(\.userInterfaceStyle, style)
+            } as @convention(block) (UIWindow, Selector, UIUserInterfaceStyle) -> Void
+        )
     }()
-
-    @objc private func swizzled_setOverrideUserInterfaceStyle(_ style: UIUserInterfaceStyle) {
-        swizzled_setOverrideUserInterfaceStyle(style)
-        environment(\.userInterfaceStyle, style)
-    }
 }
