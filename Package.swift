@@ -14,10 +14,13 @@ let package = Package(
             targets: ["UIEnvironment"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/623637646/SwiftHook", from: "3.5.2")
     ],
     targets: [
         .target(
             name: "UIEnvironment",
-            dependencies: []),
+            dependencies: [
+                .product(name: "SwiftHook", package: "SwiftHook")
+            ]),
     ]
 )

@@ -12,7 +12,7 @@ extension UIEnvironmentValues {
         set { self[LocaleEnvironmentKey.self] = newValue }
     }
 
-    internal static let setupCurrentLocaleListener: Void = {
+    public static let setupCurrentLocaleListener: Void = {
         NotificationCenter.default.addObserver(
             forName: NSLocale.currentLocaleDidChangeNotification,
             object: nil,

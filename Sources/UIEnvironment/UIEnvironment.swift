@@ -79,10 +79,9 @@ import UIKit
     /// Creates an environment property to read the specified key path.
     /// - Parameter keyPath: A key path to a specific resulting value.
     public init(_ keyPath: KeyPath<UIEnvironmentValues, Value>) {
-        UIScreen.setupTraitCollectionListener
-        UIWindow.setupOverrideUserInterfaceListener
-        UIEnvironmentValues.setupCurrentLocaleListener
-        UIEnvironmentValues.setupSizeCategoryListener
+        if let setupPredefinedEnvironmentListeners = UIEnvironmentValues.setupPredefinedEnvironmentListeners(keyPath) {
+            setupPredefinedEnvironmentListeners()
+        }
         self.keyPath = keyPath
     }
 }
